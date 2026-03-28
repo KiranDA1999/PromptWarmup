@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Universal Bridge AI</title>
+  <meta name="description" content="AI-powered system to convert messy, unstructured input into structured, actionable outputs.">
+  <link rel="stylesheet" href="./style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="light-mode">
+  <div class="container">
+    <header>
+      <h1>Universal Bridge AI</h1>
+      <button id="theme-toggle" class="btn-icon" aria-label="Toggle dark mode">🌙</button>
+    </header>
+
+    <main>
+      <section class="input-section">
+        <p class="subtitle">Convert messy real-world input into actionable intelligence.</p>
+        <div class="input-wrapper">
+          <textarea id="user-input" placeholder="e.g., my dad chest pain since morning..." rows="4" aria-label="Messy input text"></textarea>
+          <div class="input-actions">
+            <button id="voice-btn" class="btn-icon" aria-label="Voice input" title="Voice Input">🎤</button>
+            <button id="image-btn" class="btn-icon" aria-label="Image upload" title="Simulate Image Upload">🖼️</button>
+            <button id="submit-btn" class="btn-primary">Process</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="loading-state" class="hidden">
+        <div class="spinner"></div>
+        <p>Analyzing input parameters...</p>
+      </section>
+
+      <section id="output-section" class="hidden">
+        <div id="safety-banner" class="alert-banner hidden">
+          <strong>⚠️ HIGH URGENCY DETECTED</strong> Proceed with immediate action!
+        </div>
+        
+        <div class="results-grid">
+          <div class="card intent-card">
+            <h3>🧠 Captured Intent</h3>
+            <p id="out-intent">-</p>
+          </div>
+          <div class="card urgency-card">
+            <h3>⚠️ Urgency Level</h3>
+            <span id="out-urgency" class="badge">-</span>
+          </div>
+        </div>
+
+        <div class="card details-card">
+          <h3>📋 Extracted Entities</h3>
+          <ul id="out-entities" class="tags-list"></ul>
+        </div>
+
+        <div class="card actions-card">
+          <h3>✅ Recommended Actions</h3>
+          <ul id="out-actions" class="steps-list"></ul>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
