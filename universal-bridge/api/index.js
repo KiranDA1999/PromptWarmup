@@ -2,11 +2,20 @@ import express from 'express';
 import cors from 'cors';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from the built Vite client
+app.use(express.static(path.join(__dirname, '../dist')));
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || 'MISSING_KEY');
 
@@ -35,7 +44,7 @@ app.post('/api/process', async (req, res) => {
       return res.status(400).json({ error: 'Input is required' });
     }
 
-    if (!process.env.GEMINI_API_KEY) {
+    if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'MISSING_KEY') {
       return res.status(500).json({ error: 'GEMINI_API_KEY is not configured on the server.' });
     }
 
@@ -59,11 +68,15 @@ app.post('/api/process', async (req, res) => {
   }
 });
 
-if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`Universal Bridge Backend is running on port ${PORT}`);
-  });
-}
+// React Catchall for SPA routing if needed
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+
+// Port dynamically assigned by Google Cloud Run (defaults to 8080)
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Universal Bridge AI Cloud Run container active on port ${PORT}`);
+});
 
 export default app;
